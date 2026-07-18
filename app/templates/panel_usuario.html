@@ -1,0 +1,1495 @@
+<!DOCTYPE html>
+<html lang="es">
+{% load static %}
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Panel de Usuario</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="{% static 'style/usuario.css' %}">
+</head>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Segoe UI",Tahoma,Geneva,Verdana,sans-serif;
+}
+
+
+body{
+
+    background:url("/media/img/drones-fumigadores.webp") center center fixed;
+
+    background-size:cover;
+
+    color:#333;
+
+    min-height:100vh;
+
+}
+
+body::before{
+
+    content:"";
+
+    position:fixed;
+
+    top:0;
+    left:0;
+
+    width:100%;
+    height:100%;
+
+    background:rgba(0,0,0,.30);
+
+    z-index:-1;
+
+}
+
+/*================NAVBAR========================================*/
+.navbar-custom{
+
+    height:75px;
+
+    box-shadow:0 5px 20px rgba(0,0,0,.15);
+
+}
+
+
+.logo{
+
+    color:white;
+
+    font-size:25px;
+
+    font-weight:bold;
+
+}
+
+
+.btn-salir{
+
+    background:white;
+
+    color:#198754;
+
+    padding:10px 25px;
+
+    border-radius:12px;
+
+    text-decoration:none;
+
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+
+.btn-salir:hover{
+
+    background:#e9f7ef;
+
+    transform:translateY(-3px);
+
+}
+
+
+
+/*==================================================
+            CONTENEDOR
+===================================================*/
+
+
+.panel-container{
+
+    padding-top:35px;
+
+    padding-bottom:40px;
+
+}
+
+
+
+/*==================================================BIENVENIDA===================================================*/
+.bienvenida{ 
+    background: rgba(53 53 53 / 18%);
+    backdrop-filter: blur(18px);
+    color:white; padding:35px; 
+    border-radius:22px; 
+    font-size:30px; 
+    font-weight:bold; 
+    margin-bottom:30px; 
+    box-shadow:0 12px 25px rgba(0,0,0,.15); }
+
+/*==================================================TARJETAS PRINCIPALES===================================================*/
+.card-panel{
+
+    background:rgba(53 53 53 / 18%);
+
+    backdrop-filter:blur(18px);
+
+    -webkit-backdrop-filter:blur(18px);
+
+    border:1px solid rgba(255,255,255,.25);
+
+    border-radius:22px;
+
+    padding:35px;
+
+    margin-bottom:35px;
+
+    box-shadow:0 15px 35px rgba(0,0,0,.25);
+
+    transition:.35s;
+
+}
+
+.card-panel:hover{
+
+    transform:translateY(-5px);
+
+    box-shadow:0 20px 45px rgba(0,0,0,.35);
+
+}
+
+.card-title-custom{
+
+    color:#198754;
+
+    font-weight:bold;
+
+    font-size:26px;
+
+}
+
+
+
+/*==================================================BOTONES===================================================*/
+
+.btn-editar,
+.btn-agendar{
+    background:#198754;
+
+    color:white;
+
+    border-radius:12px;
+
+    padding:10px 20px;
+
+    text-decoration:none;
+
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+.btn-editar:hover,
+.btn-agendar:hover{
+
+    background:#146c43;
+
+    color:white;
+
+    transform:translateY(-3px);
+
+}
+/*==================================================FOTO PERFIL===================================================*/
+.profile-photo-square{
+
+
+    width:220px;
+
+    height:220px;
+
+    object-fit:cover;
+
+    border-radius:50%;
+
+    border:7px solid #198754;
+
+    padding:5px;
+
+    background:white;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.15);
+
+}
+/*==================================================INFORMACIÓN===================================================*/
+.subtitulo{
+
+    color:#198754;
+
+    font-weight:bold;
+
+    border-bottom:2px solid #198754;
+
+    padding-bottom:8px;
+
+    margin-bottom:18px;
+
+}
+
+.info-item{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    padding:12px 15px;
+
+    background:#f8fdf9;
+
+    border-radius:10px;
+
+    margin-bottom:10px;
+
+    border-left:4px solid #198754;
+
+}
+
+.info-label{
+
+    font-weight:bold;
+
+    color:#198754;
+
+}
+
+
+.info-value{
+
+    color:#555;
+
+    text-align:right;
+
+}
+
+/*==================================================
+                TABLA USUARIOS
+===================================================*/
+.table-responsive{
+
+    border-radius:20px;
+
+    overflow:hidden;
+
+    background:rgba(255,255,255,.65);
+
+    backdrop-filter:blur(20px);
+
+    -webkit-backdrop-filter:blur(20px);
+
+    border:1px solid rgba(255,255,255,.4);
+
+    box-shadow:0 20px 45px rgba(0,0,0,.12);
+
+}
+
+
+/*================ TABLA ================*/
+
+.table{
+
+    margin:0;
+
+    border-collapse:collapse;
+
+    background:transparent;
+
+}
+
+
+/*================ CABECERA ================*/
+
+.table thead{
+
+    background:#198754;
+
+}
+
+.table thead th{
+
+    color:#198754;
+
+    font-size:15px;
+
+    font-weight:700;
+
+    text-transform:uppercase;
+
+    letter-spacing:1px;
+
+    padding:18px;
+
+    border:none;
+
+}
+
+
+/*================ FILAS ================*/
+.table tbody tr{
+
+    transition:.35s;
+
+}
+
+.table tbody tr:hover{
+
+    background:#f3fff7;
+
+    box-shadow:0 8px 20px rgba(25,135,84,.15);
+
+}
+
+.table tbody td:first-child{
+
+    border-left:5px solid transparent;
+
+    font-weight:bold;
+
+    color:#198754;
+
+    transition:.35s;
+
+}
+
+.table tbody tr:hover td:first-child{
+
+    border-left-color:#198754;
+
+}
+
+/*================ CELDAS ================*/
+
+.table tbody td{
+
+    padding:18px;
+
+    border-top:1px solid #edf2f7;
+
+    border-bottom:1px solid #edf2f7;
+
+    vertical-align:middle;
+
+    text-align:center;
+
+    color:#555;
+
+}
+
+
+/* Primera columna */
+
+.table tbody td:first-child{
+
+    font-weight:700;
+
+    color:#198754;
+
+}
+
+
+/* Zebra */
+
+.table tbody tr:nth-child(even){
+
+    background:#f8fbf9;
+
+}
+
+
+/*================ BOTONES ================*/
+
+.table .btn{
+
+    border-radius:25px;
+
+    padding:7px 18px;
+
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+.table .btn:hover{
+
+    transform:scale(1.08);
+
+}
+
+
+/*==================================================
+                SERVICIOS
+===================================================*/
+
+.service-card{
+
+    position:relative;
+
+    overflow:hidden;
+
+    background:linear-gradient(135deg,#ffffff,#f4fff8);
+
+    border-radius:20px;
+
+    padding:35px 25px;
+
+    text-align:center;
+
+    border:1px solid rgba(25,135,84,.15);
+
+    border-top:6px solid #198754;
+
+    box-shadow:0 12px 30px rgba(0,0,0,.12);
+
+    transition:all .35s ease;
+
+}
+
+
+/* Brillo */
+
+.service-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+
+    left:-120%;
+
+    width:60%;
+
+    height:100%;
+
+    background:linear-gradient(
+        120deg,
+        transparent,
+        rgba(255,255,255,.55),
+        transparent
+    );
+
+    transition:.8s;
+
+}
+
+
+.service-card:hover::before{
+
+    left:140%;
+
+}
+
+
+/* Hover */
+
+.service-card:hover{
+
+    transform:translateY(-10px);
+
+    box-shadow:0 20px 40px rgba(25,135,84,.25);
+
+    border-top-color:#20c997;
+
+}
+
+
+/* Título */
+
+.service-card h4{
+
+    color:#198754;
+
+    font-size:24px;
+
+    font-weight:700;
+
+    margin-bottom:18px;
+
+}
+
+
+/* Descripción */
+
+.service-card p{
+
+    color:#666;
+
+    line-height:1.8;
+
+    font-size:15px;
+
+    margin-bottom:0;
+
+}
+
+
+
+/*==================================================
+                MODALES
+===================================================*/
+
+
+.modal-content{
+
+    border:none;
+
+    border-radius:20px;
+
+    box-shadow:0 20px 40px rgba(0,0,0,.2);
+
+}
+
+
+
+.modal-header{
+
+    background:#198754;
+
+    color:white;
+
+}
+
+
+
+.modal-title{
+
+    font-weight:bold;
+
+}
+
+
+
+.modal .form-control,
+.modal .form-select{
+
+
+    border-radius:10px;
+
+    padding:12px;
+
+}
+
+
+
+.modal .form-control:focus,
+.modal .form-select:focus{
+
+    border-color:#198754;
+
+    box-shadow:0 0 10px rgba(25,135,84,.25);
+
+}
+
+
+
+
+.foto-preview{
+
+
+    width:170px;
+
+    height:170px;
+
+    object-fit:cover;
+
+    border-radius:50%;
+
+    border:5px solid #198754;
+
+}
+
+
+
+/*==================================================
+                BOTONES MODAL
+===================================================*/
+
+
+.modal .btn-success{
+
+    background:#198754;
+
+    border:none;
+
+    border-radius:10px;
+
+    padding:12px;
+
+}
+
+
+.modal .btn-success:hover{
+
+    background:#146c43;
+
+}
+
+
+
+/*==================================================
+                RESPONSIVE
+===================================================*/
+
+
+@media(max-width:768px){
+
+
+    .bienvenida{
+
+        font-size:22px;
+
+        text-align:center;
+
+    }
+
+
+    .card-panel{
+
+        padding:20px;
+
+    }
+
+
+    .profile-photo-square{
+
+        width:150px;
+
+        height:150px;
+
+        margin-bottom:25px;
+
+    }
+
+
+    .info-item{
+
+        flex-direction:column;
+
+        gap:5px;
+
+    }
+
+
+    .info-value{
+
+        text-align:left;
+
+    }
+
+
+    .table{
+
+        font-size:13px;
+
+    }
+
+
+}
+</style>
+<body>
+    <!------------------------------ NAVBAR --------------------------------------->
+    <nav class="navbar navbar-custom">
+
+        <div class="container d-flex justify-content-between align-items-center">
+
+            <span class="logo">   
+                     
+            </span>
+
+            <a href="/logout/" class="btn-salir">
+                Cerrar Sesión
+            </a>
+
+        </div>
+
+    </nav>
+
+    <div class="container panel-container">
+
+        <!-- BIENVENIDA -->
+
+        <div class="bienvenida">
+            Bienvenido {{ usuario.nombre_completo }}
+        </div>
+
+        <!-- DATOS PERSONALES -->
+        <div class="card-panel">
+
+            <div class="d-flex justify-content-between align-items-center mb-4">
+
+                <h3 class="card-title-custom">
+                    👤 {{ usuario.nombre_completo }}
+                </h3>
+
+                <a href="#" class="btn btn-editar" data-bs-toggle="modal" data-bs-target="#editarModal">
+
+                    ✏️ Editar Perfil
+
+                </a>
+
+            </div>
+
+            <div class="row">
+
+                <!-- FOTO -->
+                <div class="col-lg-3 text-center">
+
+                    {% if usuario.foto %}
+
+                    <img src="{{ usuario.foto.url }}" class="profile-photo-square">
+
+                    {% else %}
+
+                    <img src="/static/img/user.png" class="profile-photo-square">
+
+                    {% endif %}
+
+                </div>
+
+                <!-- INFORMACIÓN -->
+                <div class="col-lg-9">
+
+                    <div class="row">
+
+                        <!-- COLUMNA 1 -->
+                        <div class="col-md-6">
+
+                            <h5 class="subtitulo">
+                                👤 Datos Personales
+                            </h5>
+
+                            <div class="info-item">
+                                <span class="info-label">Nombre:</span>
+                                <span class="info-value">{{ usuario.nombre_completo }}</span>
+                            </div>
+
+                            <div class="info-item">
+                                <span class="info-label">Correo:</span>
+                                <span class="info-value">{{ usuario.correo }}</span>
+                            </div>
+
+                            <div class="info-item">
+                                <span class="info-label">Teléfono:</span>
+                                <span class="info-value">{{ usuario.telefono }}</span>
+                            </div>
+
+                            <div class="info-item">
+                                <span class="info-label">Domicilio:</span>
+                                <span class="info-value">{{ usuario.domicilio }}</span>
+                            </div>
+
+                            <h5 class="subtitulo mt-4">
+                                🚁 Información del Dron
+                            </h5>
+
+                            <div class="info-item">
+                                <span class="info-label">Modelo:</span>
+                                <span class="info-value">{{ usuario.modelo_dron }}</span>
+                            </div>
+
+                            <div class="info-item">
+                                <span class="info-label">Serie:</span>
+                                <span class="info-value">{{ usuario.num_serie_dron }}</span>
+                            </div>
+
+                            <div class="info-item">
+                                <span class="info-label">Activación:</span>
+                                <span class="info-value">{{ usuario.fecha_act_dron }}</span>
+                            </div>
+
+                        </div>
+
+                        <!-- COLUMNA 2 -->
+                        <div class="col-md-6">
+
+                            <h5 class="subtitulo">
+                                ⚙️ Generador
+                            </h5>
+
+                            <div class="info-item">
+                                <span class="info-label">Modelo:</span>
+                                <span class="info-value">{{ usuario.modelo_generador }}</span>
+                            </div>
+
+                            <div class="info-item">
+                                <span class="info-label">Serie:</span>
+                                <span class="info-value">{{ usuario.num_serie_generador }}</span>
+                            </div>
+
+                            <div class="info-item">
+                                <span class="info-label">Activación:</span>
+                                <span class="info-value">{{ usuario.fecha_act_generador }}</span>
+                            </div>
+
+                            <h5 class="subtitulo mt-4">
+                                🎮 Control
+                            </h5>
+
+                            <div class="info-item">
+                                <span class="info-label">Serie:</span>
+                                <span class="info-value">{{ usuario.num_serie_control }}</span>
+                            </div>
+
+                            <div class="info-item">
+                                <span class="info-label">Activación:</span>
+                                <span class="info-value">{{ usuario.fecha_act_control }}</span>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+<!-- ---------------------------------------------CITAS AGENDADAS----------------------------------------------- -->
+        <div class="card-panel">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+
+                <h3 class="card-title-custom">
+                    📅 Citas Agendadas
+                </h3>
+                <a href="#" class="btn btn-agendar" data-bs-toggle="modal" data-bs-target="#agendarModal">
+                    Agendar Nueva Cita
+                </a>
+
+            </div>
+
+            <div class="table-responsive">
+
+                <table class="table table-hover table-bordered">
+
+                    <thead>
+
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Equipo</th>
+                            <th>Fecha</th>
+                            <th>Hora</th>
+                            <th>Servicio</th>
+                            <th>Estado</th>
+                            <th>Acción</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for cita in citas %}
+
+                        <tr>
+
+                            <td>{{ usuario.nombre_completo }}</td>
+                            <td>{{ usuario.modelo_dron }}</td>
+                            <td>{{ cita.fecha_cita }}</td>
+                            <td>{{ cita.hora_cita }}</td>
+                            <td>{{ cita.tipo_servicio }}</td>
+                            <td>{{ cita.estatus }}</td>
+                            <td>
+                                <a href="/eliminar_cita/{{ cita.id }}/" class="btn btn-danger btn-sm">
+                                    Eliminar
+                                </a>
+                            </td>
+
+                        </tr>
+
+                        {% empty %}
+
+                        <tr>
+
+                            <td colspan="4" class="text-center">
+                                No tienes citas registradas
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+        <!-- ---------------------------------------SERVICIOS DISPONIBLES------------------------------------------ -->
+
+        <div class="card-panel">
+
+            <h3 class="card-title-custom mb-4">
+                🛠️ Servicios Disponibles
+            </h3>
+
+            <div class="row g-4">
+
+                <div class="col-md-4">
+
+                    <div class="service-card">
+
+                        <h4>🔍 Diagnóstico</h4>
+
+                        <p>
+                            Evaluación completa del dron, sensores,
+                            motores, batería y sistema electrónico.
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-4">
+
+                    <div class="service-card">
+
+                        <h4>⚙️ Mantenimiento</h4>
+
+                        <p>
+                            Limpieza, calibración, ajustes y mantenimiento
+                            preventivo especializado.
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-4">
+
+                    <div class="service-card">
+
+                        <h4>🔧 Reparación</h4>
+
+                        <p>
+                            Solución de fallas mecánicas, eléctricas
+                            y electrónicas del equipo.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- ---------------------------------------EDITAR PERFIL ------------------------------------------------- -->
+        <div class="modal fade" id="editarModal">
+
+            <div class="modal-dialog modal-lg">
+
+                <div class="modal-content">
+
+                    <div class="modal-header">
+
+                        <h5 class="modal-title">
+                            Editar Perfil
+                        </h5>
+
+                        <button type="button" class="btn-close" data-bs-dismiss="modal">
+                        </button>
+
+                    </div>
+
+                    <div class="modal-body">
+
+                        <form method="POST" action="/editar_perfil/" enctype="multipart/form-data">
+
+                            {% csrf_token %}
+
+                            <h6>Nombre Completo:</h6>
+                            <input type="text" name="nombre_completo" class="form-control mb-2"
+                                value="{{ usuario.nombre_completo }}">
+
+                            <h6>Correo:</h6>
+                            <input type="email" name="correo" class="form-control mb-2" value="{{ usuario.correo }}">
+
+                            <h6>Número de telefono:</h6><input type="text" name="telefono" class="form-control mb-2"
+                                value="{{ usuario.telefono }}">
+
+                            <h6>Domicilio:</h6><textarea name="domicilio"
+                                class="form-control mb-2">{{ usuario.domicilio }}</textarea>
+
+                            <h6>Modelo dron:</h6><input type="text" name="modelo_dron" class="form-control mb-2"
+                                value="{{ usuario.modelo_dron }}">
+
+                            <h6>Numero de serie del dron:</h6><input type="text" name="num_serie_dron"
+                                class="form-control mb-2" value="{{ usuario.num_serie_dron }}" pattern="[A-Z0-9]{10,}">
+
+                            <h6>Fecha de activación del dron:</h6>
+
+                            <input type="date" name="fecha_act_dron" id="editarFechaDron" class="form-control mb-2"
+                                value="{{ usuario.fecha_act_dron|date:'Y-m-d' }}">
+
+                            <h6>Modelo del generador:</h6><input type="text" name="modelo_generador"
+                                class="form-control mb-2" value="{{ usuario.modelo_generador }}">
+
+                            <h6>Número de serie del generador:</h6><input type="text" name="num_serie_generador"
+                                class="form-control mb-2" value="{{ usuario.num_serie_generador }}" pattern="[A-Z0-9]{10,}">
+
+                            <h6>Fecha de activacion del generador:</h6>
+                            <input type="date" name="fecha_act_generador" id="editarFechaGenerador"
+                                class="form-control mb-2" value="{{ usuario.fecha_act_generador|date:'Y-m-d' }}">
+
+                            <h6>Número de serie del control:</h6><input type="text" name="num_serie_control"
+                                class="form-control mb-2" value="{{ usuario.num_serie_control }}" pattern="[A-Z0-9]{10,}">
+
+                            <h6>Fecha de activacion del control:</h6>
+                            <input type="date" name="fecha_act_control" id="editarFechaControl"
+                                class="form-control mb-2" value="{{ usuario.fecha_act_control|date:'Y-m-d' }}">
+
+                            <input type="file" name="foto" id="fotoUsuario" class="form-control" accept="image/*">
+
+                            <label>
+                                <h6>Nueva contraseña:</h6>
+                            </label>
+
+                            <div class="input-group mb-3">
+
+                                <input 
+                                    type="password" 
+                                    name="contrasena" 
+                                    id="nuevaContrasena"
+                                    class="form-control"
+                                    placeholder="Dejar vacío para conservar la contraseña actual"
+                                >
+
+                                <button 
+                                    type="button" 
+                                    class="btn btn-outline-secondary"
+                                    onclick="mostrarPassword()">
+
+                                    <i id="iconoPassword" class="bi bi-eye"></i>
+
+                                </button>
+
+                            </div>
+
+                            <label class="form-label">
+                                <h6>Foto de perfil:</h6>
+                            </label>
+
+
+                            <div class="text-center mb-3">
+
+                                <input type="file" name="foto" id="fotoUsuario" class="form-control" accept="image/*"><br>
+                                
+
+                                {% if usuario.foto %}
+
+                                <img id="previewUsuario" src="/media/{{ usuario.foto }}" class="foto-preview">
+
+
+                                {% else %}
+
+
+                                <img id="previewUsuario" src="/static/img/user.png" class="foto-preview">
+
+
+                                {% endif %}
+
+
+                            </div>
+                            <button class="btn btn-success w-100">
+                                Guardar Cambios
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+        <!-- ---------------------------------------MENSAJE DE ACTUALIZACION ------------------------------------------ -->
+        <div class="modal fade" id="mensajeModal" tabindex="-1">
+
+            <div class="modal-dialog modal-dialog-centered">
+
+                <div class="modal-content">
+
+                    <div class="modal-header bg-success text-white">
+
+                        <h5 class="modal-title w-100 text-center">
+                            Actualización Exitosa
+                        </h5>
+
+                    </div>
+
+                    <div class="modal-body text-center">
+
+                        <div style="font-size:70px;">
+                            ✅
+                        </div>
+
+                        <h4 class="mt-3">
+                            Usuario actualizado correctamente
+                        </h4>
+
+                    </div>
+
+                    <div class="modal-footer justify-content-center border-0">
+
+                        <button type="button" class="btn btn-success px-4" data-bs-dismiss="modal">
+                            Aceptar
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- --------------------------------------- Alerta DE CONFIRMACIÓN  AGENDAR CITA ----------------------------------------------- -->
+        <div class="modal fade" id="citaModal">
+
+            <div class="modal-dialog modal-dialog-centered">
+
+                <div class="modal-content">
+
+                    <div class="modal-body text-center p-5">
+
+                        <div style="font-size:70px;">
+                            📅
+                        </div>
+
+                        <h4 class="mt-3">
+                            La cita fue agendada correctamente
+                        </h4>
+
+                        <button class="btn btn-success mt-3" data-bs-dismiss="modal">
+
+                            Aceptar
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- --------------------------------------------MODAL AGENDAR CITA ------------------------------------------------ -->
+        <div class="modal fade" id="agendarModal" tabindex="-1">
+
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+
+                <div class="modal-content">
+
+                    <div class="modal-header bg-success text-white">
+
+                        <h5 class="modal-title">
+                            📅 Agendar Nueva Cita
+                        </h5>
+
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal">
+                        </button>
+
+                    </div>
+
+                    <div class="modal-body">
+
+                        <form method="POST" action="/agendar_cita/">
+
+                            {% csrf_token %}
+
+                            <div class="mb-3">
+
+                                <label class="form-label">
+                                    Nombre Completo
+                                </label>
+
+                                <input type="text" class="form-control" value="{{ usuario.nombre_completo }}" readonly>
+
+                            </div>
+
+                            <div class="mb-3">
+
+                                <label class="form-label">
+                                    Modelo del Dron
+                                </label>
+
+                                <input type="text" class="form-control" value="{{ usuario.modelo_dron }}" readonly>
+
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">
+                                    Equipo
+                                </label>
+
+                                <select name="equipo" class="form-select">
+                                    <option value="">
+                                        Selecione el quipo para el servicio
+                                    </option>
+
+                                    <option value="Dron" {% if equipo == "Dron" %}selected{% endif %}>
+                                        Dron
+                                    </option>
+
+                                    <option value="Generador" {% if equipo == "Generador" %}selected{% endif %}>
+                                        Generador
+                                    </option>
+
+                                    <option value="Control" {% if equipo == "Control" %}selected{% endif %}>
+                                        Control
+                                    </option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+
+                                <label class="form-label">
+                                    Tipo de Servicio
+                                </label>
+
+                                <select name="tipo_servicio" class="form-select" required>
+
+                                    <option value="">
+                                        Seleccione el tipo de servicio
+                                    </option>
+
+                                    <option value="Diagnóstico">
+                                        Diagnóstico
+                                    </option>
+
+                                    <option value="Mantenimiento">
+                                        Mantenimiento
+                                    </option>
+
+                                    <option value="Reparación">
+                                        Reparación
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                            <div class="mb-3">
+
+                                <label class="form-label">
+                                    Fecha de la Cita
+                                </label>
+
+                                <input type="date" id="fecha_cita" name="fecha_cita" class="form-control" required>
+
+                            </div>
+
+                            <div class="mb-3">
+
+                                <label class="form-label">
+                                    Hora de la Cita
+                                </label>
+
+                                <select name="hora_cita" class="form-select" required>
+
+                                    <option value="">
+                                        Seleccione el horario para su cita
+                                    </option>
+
+                                    <option value="09:00">
+                                        09:00 AM
+                                    </option>
+
+                                    <option value="11:00">
+                                        11:00 AM
+                                    </option>
+
+                                    <option value="13:00">
+                                        01:00 PM
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                            <div class="mb-3">
+
+                                <label class="form-label">
+                                    Descripción
+                                </label>
+
+                                <textarea name="descripcion" class="form-control" rows="4"
+                                    placeholder="Coloca una descripción describiendo el tipo de servicio, diagnostico o reparación"
+                                    required></textarea>
+
+                            </div>
+
+                            <button type="submit" class="btn btn-success w-100">
+
+                                Agendar Cita
+
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+        <!-- --------------------------------------- MENSAJE DE CITA AGENDADA ----------------------------------------------- -->
+        <div class="modal fade" id="eliminarModal">
+
+            <div class="modal-dialog modal-dialog-centered">
+
+                <div class="modal-content">
+
+                    <div class="modal-body text-center p-5">
+
+                        <h2>🗑️</h2>
+
+                        <h4>
+                            La cita fue eliminada correctamente
+                        </h4>
+
+                        <button class="btn btn-danger mt-3" data-bs-dismiss="modal">
+
+                            Aceptar
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            </div>
+        </div>
+
+    <!-- ================= ERROR AL ELIMINAR CITA ================= -->
+
+    <div class="modal fade" id="errorEliminarModal" tabindex="-1">
+
+        <div class="modal-dialog modal-dialog-centered">
+
+            <div class="modal-content">
+
+                <div class="modal-header bg-warning text-dark">
+
+                    <h5 class="modal-title w-100 text-center">
+
+                        Acción no permitida
+
+                    </h5>
+
+                </div>
+
+                <div class="modal-body text-center p-4">
+
+                    <div style="font-size:70px;">
+                        ⚠️
+                    </div>
+
+                    <h4 class="mt-3">
+
+                        No es posible eliminar una cita que ya está en proceso o completada.
+
+                    </h4>
+
+                </div>
+
+                <div class="modal-footer justify-content-center">
+
+                    <button class="btn btn-warning px-4" data-bs-dismiss="modal">
+
+                        Aceptar
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="{% static 'js/usuario.js' %}"></script>
+    {% if mostrar_modal %}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const modal = new bootstrap.Modal(
+        document.getElementById("mensajeModal")
+    );
+
+    modal.show();
+
+});
+</script>
+{% endif %}
+
+{% if mostrar_modal_cita %}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const modal = new bootstrap.Modal(
+        document.getElementById("citaModal")
+    );
+
+    modal.show();
+
+});
+</script>
+{% endif %}
+
+{% if mostrar_modal_eliminar %}
+<script>
+
+document.addEventListener("DOMContentLoaded", function(){
+
+    const modal = new bootstrap.Modal(
+        document.getElementById("eliminarModal")
+    );
+
+    modal.show();
+
+});
+
+</script>
+{% endif %}
+
+
+{% if mostrar_modal_error %}
+<script>
+
+document.addEventListener("DOMContentLoaded", function(){
+
+    const modal = new bootstrap.Modal(
+        document.getElementById("errorEliminarModal")
+    );
+
+    modal.show();
+
+});
+
+</script>
+{% endif %}
+
+</body>
+
+</html>

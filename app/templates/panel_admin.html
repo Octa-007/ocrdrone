@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="es">
+{% load static %}
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <title>
+        Panel Administrador - OCRDrone Service
+    </title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="{% static '/style/admin.css' %}">
+
+</head>
+<body>
+
+    <!-- ============================== MENU LATERAL ============================== -->
+    <div class="sidebar" id="sidebar">
+        <div class="logo">
+            <span class="texto">
+                Menu
+            </span>
+        </div>
+        <div class="menu">
+
+            <a href="#" onclick="mostrar('inicio')">
+
+                <i class="bi bi-house"></i>
+
+                <span class="texto">
+                    Inicio
+                </span>
+            </a>
+
+            <a href="#" onclick="mostrar('usuarios')">
+                <i class="bi bi-people"></i>
+                <span class="texto">
+                    Usuarios
+                </span>
+            </a>
+
+            <a href="#" onclick="mostrar('citas')">
+                <i class="bi bi-calendar-check"></i>
+                <span class="texto">
+                    Citas
+                </span>
+            </a>
+
+
+            <a href="#" onclick="mostrar('perfil')">
+                <i class="bi bi-person-gear"></i>
+                <span class="texto">
+                    Perfil
+                </span>
+            </a>
+        </div>
+    </div>
+
+    <!-- ============================== CONTENIDO PRINCIPAL ============================== -->
+    <div class="main" id="main">
+
+    <div class="topbar">
+
+        <button id="btnMenu" class="btn-menu" onclick="toggleMenu()">
+            <i class="bi bi-list"></i>
+        </button>
+
+        <h2 class="titulo">
+            Panel Administrador
+        </h2>
+
+        <a href="/logout/" class="btn-salir">
+            <i class="bi bi-box-arrow-right"></i>
+            Salir
+        </a>
+
+    </div>
+
+        <!-- ============================== INICIO DASHBOARD ============================== -->
+        <div id="inicio" class="seccion activa">
+            <div class="card-admin">
+                <h4>
+                    <i class="bi bi-speedometer2"></i>
+                    Dashboard
+                </h4>
+
+                <div class="row mt-4">
+                    <div class="col-md-4">
+                        <div class="stat-card">
+                            <div class="numero">
+                                {{ usuarios|length }}
+                            </div>
+                            Usuarios registrado.
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="stat-card">
+                            <div class="numero">
+                                {{ citas|length }}
+                            </div>
+                            Citas registradas
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="stat-card">
+                            <div class="numero">
+                                {{ citas_pendientes }}
+                            </div>
+                            Citas pendienteS
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+<!-- ============================== USUARIOS ============================== -->
+        <div id="usuarios" class="seccion">
+            <div class="card-admin">
+                <h4>
+                    <i class="bi bi-people-fill"></i>
+                    Usuarios Registrados
+                </h4>
+
+                <form method="GET" action="/panel_admin/" class="row g-3 mb-4">
+                    <div class="col-md-8">
+                        <input type="text" name="buscar" class="form-control"
+                            placeholder="🔍 Buscar nombre, correo o modelo de dron" value="{{ buscar }}">
+                    </div>
+
+                    <div class="col-md-2">
+                        <button class="btn btn-success w-100">
+                            <i class="bi bi-search"></i>
+                            Buscar
+                        </button>
+                    </div>
+
+                    <div class="col-md-2">
+                        <a href="/panel_admin/#usuarios" class="btn btn-secondary w-100">
+                            Limpiar
+                        </a>
+                    </div>
+                </form>
+
+                <div class="table-responsive">
+                    <table class="table  table-hover">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Nombre
+                                </th>
+                                <th>
+                                    Correo
+                                </th>
+                                <th>
+                                    Teléfono
+                                </th>
+                                <th>
+                                    Dron
+                                </th>
+                                <th>
+                                    Acciones
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for u in usuarios %}
+                            <tr>
+                                <td>
+                                    {{ u.nombre_completo }}
+                                </td>
+                                <td>
+                                    {{ u.correo }}
+                                </td>
+                                <td>
+                                    {{ u.telefono }}
+                                </td>
+                                <td>
+                                    {{ u.modelo_dron }}
+                                </td>
+                                <td>
+                                    <button class="btn btn-info btn-sm" data-bs-toggle="modal"
+                                        data-bs-target="#verUsuarioModal"
+                                        data-foto="{% if u.foto %}{{ u.foto.url }}{% else %}/static/img/user.png{% endif %}"
+                                        data-nombre="{{ u.nombre_completo }}" data-correo="{{ u.correo }}"
+                                        data-telefono="{{ u.telefono }}" data-domicilio="{{ u.domicilio }}"
+                                        data-modelo="{{ u.modelo_dron }}" data-serie="{{ u.num_serie_dron }}"
+                                        data-fecha="{{ u.fecha_act_dron }}" data-generador="{{ u.modelo_generador }}"
+                                        data-serieg="{{ u.num_serie_generador }}"
+                                        data-fechag="{{ u.fecha_act_generador }}"
+                                        data-seriec="{{ u.num_serie_control }}" data-fechac="{{ u.fecha_act_control }}">
+                                        <i class="bi bi-eye"></i>
+                                        Ver más
+                                    </button>
+
+                                    <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                                        data-bs-target="#confirmarEliminarModal" data-id="{{ u.id }}"
+                                        data-nombre="{{ u.nombre_completo }}">
+                                        <i class="bi bi-trash"></i>
+                                        Eliminar
+                                    </button>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="5" class="text-center">
+                                    No existen usuarios registrados.
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+<!-- ============================== MODAL INFORMACIÓN USUARIO ============================== -->
+<div class="modal fade" id="verUsuarioModal" tabindex="-1">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header bg-success text-white">
+                <h4 class="modal-title">
+                    <i class="bi bi-person-vcard"></i>
+                    Información del usuario
+                </h4>
+                <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <div class="row g-4">
+
+                    <!-- FOTO -->
+                    <div class="col-md-4 text-center">
+                        <img id="modalFoto"
+                             src="/static/img/user.png"
+                             class="rounded-circle shadow"
+                             width="220"
+                             height="220"
+                             style="object-fit:cover;border:6px solid #198754;">
+
+                        <h4 class="mt-3" id="mNombre"></h4>
+
+                        <span class="badge bg-success">
+                            Cliente OCRDron
+                        </span>
+                    </div>
+
+                    <!-- INFORMACIÓN -->
+                    <div class="col-md-8">
+
+                        <!-- Datos personales -->
+                        <div class="card p-3 mb-3">
+                            <h5 class="text-success">
+                                <i class="bi bi-person"></i>
+                                Datos personales
+                            </h5>
+
+                            <p>
+                                <b>Correo:</b>
+                                <span id="mCorreo"></span>
+                            </p>
+
+                            <p>
+                                <b>Teléfono:</b>
+                                <span id="mTelefono"></span>
+                            </p>
+
+                            <p>
+                                <b>Domicilio:</b>
+                                <span id="mDomicilio"></span>
+                            </p>
+                        </div>
+
+                        <!-- Información del dron -->
+                        <div class="card p-3 mb-3">
+                            <h5 class="text-success">
+                                <i class="bi bi-airplane"></i>
+                                Información del dron
+                            </h5>
+
+                            <p>
+                                <b>Modelo:</b>
+                                <span id="mModelo"></span>
+                            </p>
+
+                            <p>
+                                <b>Número de serie:</b>
+                                <span id="mSerie"></span>
+                            </p>
+
+                            <p>
+                                <b>Fecha activación:</b>
+                                <span id="mFecha"></span>
+                            </p>
+                        </div>
+
+                        <!-- Generador -->
+                        <div class="card p-3 mb-3">
+                            <h5 class="text-success">
+                                <i class="bi bi-lightning"></i>
+                                Generador
+                            </h5>
+
+                            <p>
+                                <b>Modelo:</b>
+                                <span id="mGenerador"></span>
+                            </p>
+
+                            <p>
+                                <b>Serie:</b>
+                                <span id="mSerieG"></span>
+                            </p>
+
+                            <p>
+                                <b>Fecha:</b>
+                                <span id="mFechaG"></span>
+                            </p>
+                        </div>
+
+                        <!-- Control -->
+                        <div class="card p-3">
+                            <h5 class="text-success">
+                                <i class="bi bi-controller"></i>
+                                Control
+                            </h5>
+
+                            <p>
+                                <b>Serie:</b>
+                                <span id="mSerieC"></span>
+                            </p>
+
+                            <p>
+                                <b>Fecha:</b>
+                                <span id="mFechaC"></span>
+                            </p>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-success" data-bs-dismiss="modal">
+                    Cerrar
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+        <!-- ==============================MODAL CONFIRMAR ELIMINAR============================== -->
+        <div class="modal fade" id="confirmarEliminarModal" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+
+                    <div class="modal-header bg-danger text-white">
+                        <h5 class="modal-title">
+                            <i class="bi bi-exclamation-triangle"></i>
+                            Confirmar eliminación
+                        </h5>
+
+                        <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <div class="modal-body text-center">
+                        <h3>⚠️</h3>
+
+                        <h5>
+                            ¿Desea eliminar este usuario?
+                        </h5>
+
+                        <p id="nombreUsuarioEliminar" class="fw-bold text-danger"></p>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" data-bs-dismiss="modal">
+                            Cancelar
+                        </button>
+
+                        <a id="btnEliminarUsuario" href="#" class="btn btn-danger">
+                            Eliminar
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- ==============================CITAS================================ -->
+        <div id="citas" class="seccion">
+            <div class="card-admin">
+
+                <h4>
+                    <i class="bi bi-calendar-check"></i>
+                    Gestión de Citas
+                </h4>
+
+                <form method="GET" action="/panel_admin/" class="row g-3 mb-4">
+
+                    <div class="col-md-4">
+                        <label class="text-white">Estatus</label>
+
+                        <select name="estatus" class="form-select">
+                            <option value="">Todos</option>
+
+                            <option value="Pendiente" {% if estatus == "Pendiente" %}selected{% endif %}>
+                                Pendiente
+                            </option>
+
+                            <option value="En proceso" {% if estatus == "En proceso" %}selected{% endif %}>
+                                En proceso
+                            </option>
+
+                            <option value="Completado" {% if estatus == "Completado" %}selected{% endif %}>
+                                Completado
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="text-white">Servicio</label>
+
+                        <select name="servicio" class="form-select">
+                            <option value="">Todos</option>
+
+                            <option value="Mantenimiento" {% if servicio == "Mantenimiento" %}selected{% endif %}>
+                                Mantenimiento
+                            </option>
+
+                            <option value="Diagnóstico" {% if servicio == "Diagnóstico" %}selected{% endif %}>
+                                Diagnóstico
+                            </option>
+
+                            <option value="Reparación" {% if servicio == "Reparación" %}selected{% endif %}>
+                                Reparación
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4 d-flex align-items-end">
+                        <button class="btn btn-success me-2">
+                            Buscar
+                        </button>
+
+                        <a href="/panel_admin/#citas" class="btn btn-secondary me-2">
+                            Limpiar
+                        </a>
+
+                        <a href="/reporte_citas/?estatus={{estatus}}&servicio={{servicio}}" class="btn btn-danger">
+                            PDF
+                        </a>
+                    </div>
+
+                </form>
+
+                <div class="table-responsive">
+                    <table class="table  table-hover">
+
+                        <thead>
+                            <tr>
+                                <th>Cliente</th>
+                                <th>Equipo</th>
+                                <th>Servicio</th>
+                                <th>Fecha</th>
+                                <th>Hora</th>
+                                <th>Estado</th>
+                                <th>Acción</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            {% for c in citas %}
+                            <tr>
+
+                                <td>{{c.nombre_completo}}</td>
+
+                                <td>{{c.equipo}}</td>
+
+                                <td>{{c.tipo_servicio}}</td>
+
+                                <td>{{c.fecha_cita}}</td>
+
+                                <td>{{c.hora_cita}}</td>
+
+                                <td>
+                                    {% if c.estatus == "Pendiente" %}
+                                        <span class="badge bg-danger">
+                                            Pendiente
+                                        </span>
+
+                                    {% elif c.estatus == "En proceso" %}
+                                        <span class="badge bg-warning text-dark">
+                                            En proceso
+                                        </span>
+
+                                    {% else %}
+                                        <span class="badge bg-success">
+                                            Completado
+                                        </span>
+                                    {% endif %}
+                                </td>
+
+                                <td>
+                                    <a href="/cambiar_estatus/{{c.id}}/" class="btn btn-success btn-sm">
+                                        Cambiar estado
+                                    </a>
+                                </td>
+
+                            </tr>
+
+                            {% empty %}
+
+                            <tr>
+                                <td colspan="6" class="text-center">
+                                    No existen citas.
+                                </td>
+                            </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ==============================PERFIL ADMINISTRADOR NUEVO================================ -->
+        <div id="perfil" class="seccion">
+            <div class="card-admin perfil-container">
+
+                <div class="perfil-header">
+
+                    <div class="perfil-portada"></div>
+
+                    <div class="perfil-contenido">
+
+                        <div class="foto-admin-box">
+                            {% if admin.foto_admin %}
+                                <img src="/static/{{admin.foto_admin}}" class="foto-admin-nueva">
+                            {% else %}
+                                <img src="/static/img/admin.png" class="foto-admin-nueva">
+                            {% endif %}
+                        </div>
+
+                        <div class="datos-principales">
+                            <h2>{{admin.nombre_admin}}</h2>
+
+                            <p>Administrador del sistema</p>
+
+                            <button class="btn btn-warning mt-3"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#editarAdminModal">
+                                <i class="bi bi-pencil-square"></i>
+                                Editar perfil
+                            </button>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="row mt-5 g-4">
+
+                    <div class="col-md-4">
+                        <div class="dato-card">
+                            <div class="icono">👤</div>
+
+                            <h6>Nombre completo</h6>
+
+                            <p>{{admin.nombre_admin}}</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="dato-card">
+                            <div class="icono">📧</div>
+
+                            <h6>Correo electrónico</h6>
+
+                            <p>{{admin.correo_admin}}</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="dato-card">
+                            <div class="icono">📱</div>
+
+                            <h6>Teléfono</h6>
+
+                            <p>{{admin.telefono_admin}}</p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="mt-4">
+                    <div class="seguridad-card">
+
+                        <h5>🔐 Seguridad de la cuenta</h5>
+
+                        <p>
+                            La contraseña puede actualizarse desde la opción de editar perfil.
+                        </p>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        
+        <!--------------------------- MODAL EDITAR ADMIN -------------------------------------->
+        <div class="modal fade" id="editarAdminModal">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+
+                    <div class="modal-header bg-success text-white">
+                        <h5>Editar administrador</h5>
+
+                        <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <form method="POST" action="/editar_admin/" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <div class="modal-body">
+
+                            <h6>Nombre completo del administrador o empresa</h6>
+                            <input class="form-control mb-3"
+                                name="nombre_admin"
+                                value="{{admin.nombre_admin}}">
+
+                            <h6>Correo</h6>
+                            <input class="form-control mb-3"
+                                name="correo_admin"
+                                value="{{admin.correo_admin}}">
+
+                            <h6>Número de teléfono</h6>
+                            <input class="form-control mb-3"
+                                name="telefono_admin"
+                                value="{{admin.telefono_admin}}">
+
+                            <label class="fw-bold">
+                                Fotografía de perfil
+                            </label>
+
+                            <div class="text-center mb-3">
+                                {% if admin.foto_admin %}
+                                    <img id="previewAdmin"
+                                        src="/static/{{admin.foto_admin}}"
+                                        class="foto-preview-admin">
+                                {% else %}
+                                    <img id="previewAdmin"
+                                        src="/static/img/admin.png"
+                                        class="foto-preview-admin">
+                                {% endif %}
+                            </div>
+
+                            <input type="file"
+                                name="foto_admin"
+                                id="fotoAdminInput"
+                                class="form-control"
+                                accept="image/*">
+
+                            <small class="text-muted">
+                                La imagen seleccionada se mostrará antes de guardar.
+                            </small>
+
+                            <h6 class="mt-3">Nueva Contraseña</h6>
+
+                            <p>
+                                En caso de que no se desee actualizar la contraseña, deje en blanco esta sección.
+                            </p>
+
+                            <div class="input-group mb-3">
+                                <input
+                                    type="password"
+                                    class="form-control"
+                                    id="contrasenaAdmin"
+                                    name="contrasena_admin"
+                                    placeholder="Nueva contraseña">
+
+                                <button
+                                    type="button"
+                                    class="btn btn-outline-secondary"
+                                    onclick="mostrarPasswordAdmin()">
+
+                                    <i id="iconoAdmin" class="bi bi-eye"></i>
+                                </button>
+                            </div>
+
+                        </div>
+
+                        <div class="modal-footer">
+                            <button class="btn btn-success">
+                                Guardar
+                            </button>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+    <!------------------------ MODAL ACTUALIZADO -------------------------->
+        <div class="modal fade" id="adminActualizadoModal">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content text-center">
+
+                    <div class="modal-body p-5">
+
+                        <h1>✅</h1>
+
+                        <h4>
+                            Perfil actualizado correctamente
+                        </h4>
+
+                        <button class="btn btn-success" data-bs-dismiss="modal">
+                            Aceptar
+                        </button>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!--------------------- MODAL ELIMINADO ------------------------->
+        <div class="modal fade" id="usuarioEliminadoModal">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content text-center">
+
+                    <div class="modal-body p-5">
+
+                        <h1>✅</h1>
+
+                        <h4>
+                            Usuario eliminado correctamente
+                        </h4>
+
+                        <button class="btn btn-success" data-bs-dismiss="modal">
+                            Aceptar
+                        </button>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="{% static 'js/admin.js' %}"></script>
+
+</body>
+
+</html>
